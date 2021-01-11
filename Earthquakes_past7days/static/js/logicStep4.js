@@ -20,14 +20,6 @@ let baseMaps = {
   "Satellite": satelliteStreets
 };
 
-// Create the earthquake layer for our map.
-let earthquakes = new L.layerGroup();
-
-// We define an object that contains the overlays.
-// This overlay will be visible all the time.
-let overlays = {
-  Earthquakes: earthquakes
-};
 
 // Create the map object with center, zoom level and default layer.
 let map = L.map('mapid', {
@@ -36,9 +28,8 @@ let map = L.map('mapid', {
   layers: [streets]
 })
 
-// Then we add a control to the map that will allow the user to change
-// which layers are visible
-L.control.layers(baseMaps, overlays).addTo(map);
+// Pass our map layers into our layers control and add the layers control to the map.
+L.control.layers(baseMaps).addTo(map);
 
 // This function returns the style data for each of the earthquakes we plot on
 // the map. We pass the magnitude of the earthquake into a function
@@ -86,7 +77,9 @@ function getRadius(magnitude) {
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
  // Creating a GeoJSON layer with the retrieved data.
  L.geoJson(data, {
+
   // We turn each feature into a circleMarker on the map.
+  
   pointToLayer: function(feature, latlng) {
               console.log(data);
               return L.circleMarker(latlng);
@@ -99,12 +92,8 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
         layer.bindPopup(`Magnitude: ${feature.properties.mag} <br> Location: ${feature.properties.place}`);
       }
 
-      }).addTo(earthquakes);
-      // Then we add the earthquake layer to our map.
-      earthquakes.addTo(map);
+      }).addTo(map);
   });
-
-
 
 // // Grabbing our GeoJSON data (skill drill).
 // d3.json(torontoHoods).then(function(data) {
