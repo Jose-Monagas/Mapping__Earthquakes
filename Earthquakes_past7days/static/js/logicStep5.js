@@ -38,7 +38,9 @@ let map = L.map('mapid', {
 
 // Then we add a control to the map that will allow the user to change
 // which layers are visible
-L.control.layers(baseMaps, overlays).addTo(map);
+L.control.layers(baseMaps, overlays, {
+  collapsed: false
+}).addTo(map);
 
 // This function returns the style data for each of the earthquakes we plot on
 // the map. We pass the magnitude of the earthquake into a function
